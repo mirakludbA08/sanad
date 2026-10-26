@@ -828,7 +828,9 @@
       pill.classList.remove("is-empty");
       pill.innerHTML = `<span>${esc(familyLabel(famName(fam)))}</span><b>${fmtNum(row.points)} ${t("pts")}</b>`;
       pill.setAttribute("aria-label", `${familyLabel(famName(fam))}, ${pointsLabel(row.points)}`);
+      pill.title = familyLabel(famName(fam));
     } else {
+      pill.removeAttribute("title");
       pill.classList.add("is-empty");
       pill.innerHTML = `<span class="long">${t("pill.signin")}</span><span class="short">${t("pill.signinShort")}</span>`;
       pill.removeAttribute("aria-label");

@@ -143,10 +143,15 @@ main { min-height: 60vh; outline: none; }
   padding: 8px 16px; font: 500 .9375rem var(--font); color: var(--ink); cursor: pointer;
 }
 
-@media (max-width: 1180px) {
+/* The header shares the page's 1160px width. The family pill shows only the points (the name is
+   in its tooltip), the subtitle gives way below 1400px, and below 1100px the menu folds away. */
+.brand, .site-nav, .lang-toggle, .family-pill { flex-shrink: 0; }
+.family-pill:not(.is-empty) span { display: none; }
+.family-pill:not(.is-empty) { padding: 4px; }
+@media (max-width: 1400px) {
   .brand span { display: none; }
 }
-@media (max-width: 960px) {
+@media (max-width: 1100px) {
   .header-inner { flex-wrap: wrap; gap: 12px; min-height: 60px; padding-block: 10px; }
   .brand span { display: none; }
   .lang-toggle { order: 1; margin-inline-start: auto; }
