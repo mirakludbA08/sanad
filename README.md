@@ -167,7 +167,7 @@ To update the site later, upload the changed files to the repository again. GitH
 | Challenges (names, descriptions, tasks, hours), areas, events, sample stories, sample families on the dashboard, the quiz | `assets/js/data.js` |
 | The 100-hour goal | `goalHours` at the top of `assets/js/data.js` |
 | About page text, home page text, page headings | `assets/js/app.js` (search for the sentence you want to change) |
-| The "Website by [Your Name]" credit and footer text | `index.html` |
+| The "Website by" credit and footer text | `index.html` |
 | Colors and fonts | the `:root` block at the top of `assets/css/style.css` |
 | Logo | `assets/img/logo.png` (maroon) and `assets/img/logo-gold.png` (gold, used on the passport cover and footer) |
 
@@ -234,12 +234,11 @@ A hosted backend such as Supabase or Firebase covers items 1 to 4 without runnin
 - [ ] About page wording (written from the brief as a draft)
 - [ ] Quiz questions and answers for the Cultural Landmarks Tour
 - [ ] Team names, partner logos and contact details to add to the site
-- [ ] The website designer's credit (commented out in the footer of `index.html`)
 
 ---
 
 ## Credits
 
 - Initiative: the Sanad team
-- Website design and development: volunteer contributor (name to be added)
+- Website design and development: AbdulKarim Tahir
 - Logo: Sanad initiative
