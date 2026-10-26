@@ -90,6 +90,58 @@
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
   };
 
+  /* ---------- Artwork ---------- */
+
+  // Line icons for the four areas, drawn after the Sanad poster.
+  // Shapes that sit in front of others are filled with --icon-bg so lines behind them are hidden.
+  const AREA_ICON = {
+    kinship: '<circle cx="15" cy="14" r="4.5"/><path d="M6.5 31c0-5.2 3.8-9 8.5-9s8.5 3.8 8.5 9"/><circle cx="33" cy="14" r="4.5"/><path d="M24.5 31c0-5.2 3.8-9 8.5-9s8.5 3.8 8.5 9"/><g style="fill:var(--icon-bg)"><circle cx="24" cy="24.5" r="4"/><path d="M17 39c0-4.6 3.1-8 7-8s7 3.4 7 8z"/></g>',
+    heritage: '<path d="M39.5 33V17.5M43 33V17.5M38.5 17.5h5.5M41.2 17.5v-3.5M41.2 14l-1.2-1.5h2.4z"/><path d="M6 32h32l-4 5.5H11z" style="fill:var(--icon-bg)"/><path d="M20 32V9.5"/><path d="M20.5 10.5c6 5 9.5 11.5 10.5 19H20.5z"/><path d="M10.5 9.6l1.1 2.2 2.4.3-1.8 1.6.5 2.4-2.2-1.2-2.1 1.2.4-2.4-1.7-1.6 2.4-.3z"/><path d="M5 42c2-1.4 4-1.4 6 0s4 1.4 6 0 4-1.4 6 0 4 1.4 6 0 4-1.4 6 0 4 1.4 6 0"/>',
+    volunteering: '<path d="M24 34V21"/><path d="M24 26c-5.5 0-8.5-3.4-8.5-8.5 5.5 0 8.5 3.4 8.5 8.5z"/><path d="M24 22.5c0-5 3-8.5 8.5-8.5 0 5-3 8.5-8.5 8.5z"/><path d="M4.5 27.5l6 7c2.2 2.6 5.3 4 8.7 4H24M43.5 27.5l-6 7c-2.2 2.6-5.3 4-8.7 4H24"/><path d="M10.5 34.5l3.5-4c1-1.1 2.7-1.2 3.8-.2l2.7 2.4M37.5 34.5l-3.5-4c-1-1.1-2.7-1.2-3.8-.2l-2.7 2.4"/>',
+    health: '<path d="M24 38.5C14.5 31.5 8 25.5 8 18.5 8 14 11.5 10.5 16 10.5c3.4 0 6 2 8 4.6 2-2.6 4.6-4.6 8-4.6 4.5 0 8 3.5 8 8 0 7-6.5 13-16 20z"/><path d="M10.5 23h6.5l2.8-5.5 4.2 11 2.8-6.5 1.6 1H37"/><g style="fill:var(--icon-bg)"><circle cx="37.5" cy="36" r="5.2"/></g><circle cx="37.5" cy="36" r="1.8"/><path d="M37.5 28.6v2.2M37.5 41.2v2.2M30.1 36h2.2M42.7 36h2.2M32.3 30.8l1.5 1.5M41.2 39.7l1.5 1.5M32.3 41.2l1.5-1.5M41.2 32.3l1.5-1.5"/>'
+  };
+
+  function areaIcon(id, cls) {
+    return `<span class="area-icon${cls ? " " + cls : ""}" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${AREA_ICON[id]}</svg></span>`;
+  }
+
+  // Palm fronds drawn as leaflets along a curved rib. The CSS blurs them so they read as
+  // the shadow of a palm falling across a plaster wall.
+  let palmCache = "";
+  function palmSVG() {
+    if (palmCache) return palmCache;
+    const fronds = [
+      { p0: [-60, 10], p1: [250, 30], p2: [600, 250], len: 130 },
+      { p0: [-40, 300], p1: [200, 170], p2: [470, 30], len: 105 },
+      { p0: [-80, 150], p1: [140, 120], p2: [330, 175], len: 80 }
+    ];
+    let leaves = "", ribs = "";
+    fronds.forEach(f => {
+      const at = (t, i) => (1 - t) * (1 - t) * f.p0[i] + 2 * (1 - t) * t * f.p1[i] + t * t * f.p2[i];
+      const slope = (t, i) => 2 * (1 - t) * (f.p1[i] - f.p0[i]) + 2 * t * (f.p2[i] - f.p1[i]);
+      ribs += `<path d="M${f.p0} Q${f.p1} ${f.p2}"/>`;
+      for (let i = 2; i < 32; i++) {
+        const t = i / 32, x = at(t, 0), y = at(t, 1);
+        let tx = slope(t, 0), ty = slope(t, 1);
+        const m = Math.hypot(tx, ty); tx /= m; ty /= m;
+        [-1, 1].forEach(s => {
+          const a = s * 0.95;
+          const dx = tx * Math.cos(a) - ty * Math.sin(a), dy = tx * Math.sin(a) + ty * Math.cos(a);
+          const len = f.len * (1 - 0.55 * t) * (0.8 + 0.08 * ((i * 7 + (s > 0 ? 3 : 0)) % 5));
+          const w = 8 * (1 - 0.45 * t);
+          const mx = x + dx * len * 0.45, my = y + dy * len * 0.45;
+          const r = n => n.toFixed(1);
+          leaves += `<path d="M${r(x)},${r(y)}Q${r(mx - dy * w)},${r(my + dx * w)} ${r(x + dx * len)},${r(y + dy * len)}Q${r(mx + dy * w)},${r(my - dx * w)} ${r(x)},${r(y)}Z"/>`;
+        });
+      }
+    });
+    palmCache = `<svg class="palm" viewBox="0 0 600 400" aria-hidden="true" focusable="false"><g fill="currentColor">${leaves}</g><g fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round">${ribs}</g></svg>`;
+    return palmCache;
+  }
+
+  // The calligraphic sweep that underlines the logo on the poster.
+  const SWASH = '<svg class="swash" viewBox="0 0 420 40" aria-hidden="true" focusable="false"><path d="M4 34C90 14 250 2 416 8 268 8 116 20 8 37z" fill="currentColor"/></svg>';
+
   /* ---------- Hours ---------- */
 
   // Approved ("done") and in-review ("pending") hours, per area and in total.
@@ -187,12 +239,46 @@
 
   /* ---------- Shared pieces ---------- */
 
-  function pageHead(ar, title, text) {
-    return `<section class="page-head wrap">
-      <span class="ar" lang="ar" dir="rtl">${ar}</span>
-      <h1>${esc(title)}</h1>
-      ${text ? `<p>${text}</p>` : ""}
+  // Photographs from the Sanad poster, shown as framed prints in page headers.
+  const PHOTO = {
+    hands: { src: "assets/img/photo-hands.jpg", alt: "An elder's hand holding a young girl's hand", w: 430, h: 250 },
+    flag: { src: "assets/img/photo-flag.jpg", alt: "The Qatari flag against a sunlit wall and palm leaves", w: 330, h: 330 },
+    planting: { src: "assets/img/photo-planting.jpg", alt: "Volunteers planting young trees", w: 430, h: 280 },
+    sadu: { src: "assets/img/photo-sadu.jpg", alt: "A woven Sadu rug in maroon, black and white", w: 500, h: 200 },
+    skyline: { src: "assets/img/photo-skyline.jpg", alt: "The Doha skyline at sunset from the corniche", w: 506, h: 300 }
+  };
+
+  function printHTML(photo, cls) {
+    return `<figure class="print${cls ? " " + cls : ""}"><img src="${photo.src}" alt="${esc(photo.alt)}" width="${photo.w}" height="${photo.h}"></figure>`;
+  }
+
+  function pageHead(ar, title, text, photo) {
+    return `<section class="page-head">
+      ${palmSVG()}
+      <div class="wrap${photo ? " has-print" : ""}">
+        <div>
+          <span class="ar" lang="ar" dir="rtl">${ar}</span>
+          <h1>${esc(title)}</h1>
+          <span class="rule"></span>
+          ${text ? `<p>${text}</p>` : ""}
+        </div>
+        ${photo ? printHTML(photo, "page-print") : ""}
+      </div>
     </section>`;
+  }
+
+  function areaCardsHTML() {
+    return `<div class="area-grid">${D.domains.map(d => `
+      <a class="area-card" data-domain="${d.id}" href="#/challenges/${d.id}">
+        <span class="area-photo"><img src="${d.photo}" alt="${esc(d.photoAlt)}" loading="lazy" width="500" height="340"></span>
+        ${areaIcon(d.id)}
+        <span class="area-ar" lang="ar" dir="rtl">${d.ar}</span>
+        <span class="area-goal-ar" lang="ar" dir="rtl">${d.goalAr}</span>
+        <span class="rule"></span>
+        <span class="area-en"><b>${esc(d.name)}</b>${esc(d.goal)}</span>
+        <span class="area-meta">${D.activities.filter(a => a.domain === d.id).length} challenges, ${d.target} hours</span>
+      </a>`).join("")}
+    </div>`;
   }
 
   function stampHTML(o) {
@@ -200,6 +286,7 @@
     const r = o.rot != null ? o.rot : (hashCode(o.date + o.domain + o.hours + (o.seed || "")) % 24) - 12;
     const date = o.pending ? "In review" : fmtDate(o.date, { day: "2-digit", month: "short", year: "2-digit" }).toUpperCase();
     return `<div class="stamp${o.pending ? " is-pending" : ""}${o.cls ? " " + o.cls : ""}" data-domain="${d.id}" style="--r:${r}deg">
+      ${areaIcon(d.id, "stamp-icon")}
       <span class="stamp-area">${esc(d.short)}</span>
       <span class="stamp-hours">${o.hours}<small>h</small></span>
       <span class="stamp-date">${date}</span>
@@ -211,12 +298,13 @@
       <p class="booklet-top"><span lang="ar" dir="rtl">مبادرة سند</span>Sanad initiative</p>
       <img src="assets/img/logo-gold.png" alt="">
       <p class="booklet-title"><strong>Family</strong>Passport</p>
+      <span class="booklet-sadu"></span>
       <span class="chip-mark"></span>
     </div>`;
   }
 
   function chip(domainId, text) {
-    return `<span class="chip" data-domain="${domainId}">${esc(text || domainById[domainId].name)}</span>`;
+    return `<span class="chip" data-domain="${domainId}">${areaIcon(domainId, "chip-icon")}${esc(text || domainById[domainId].name)}</span>`;
   }
 
   function upcomingEvents() {
@@ -270,17 +358,25 @@
     const story = D.stories[0];
     return `
     <section class="hero">
+      ${palmSVG()}
+      <img class="lantern" src="assets/img/lantern.jpg" alt="" width="112" height="470">
       <div class="wrap hero-grid">
-        <div>
-          <p class="hero-ar" lang="ar" dir="rtl">جواز سند العائلي</p>
+        <div class="hero-copy">
+          <div class="hero-mark">
+            <img src="assets/img/logo.png" alt="Sanad" width="900" height="367">
+            ${SWASH}
+          </div>
+          <p class="hero-tagline" lang="ar" dir="rtl">${D.tagline.ar}</p>
+          <p class="hero-tagline-en">${esc(D.tagline.en)}</p>
           <h1>100 hours that bring a family closer.</h1>
-          <p class="lede">Sanad gives every family a digital passport. Do activities together across four areas of family and community life, collect a stamp for each one, and work towards 100 shared hours.</p>
+          <p class="lede">Every family gets a digital passport. Do activities together across four areas of family and community life, collect a stamp for each one, and work towards 100 shared hours.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#/passport">${state.family ? "Open your passport" : "Create your family passport"}</a>
             <a class="btn btn-secondary" href="#/challenges">Browse challenges</a>
           </div>
         </div>
         <div class="hero-art" aria-hidden="true">
+          <span class="sun"></span>
           ${bookletHTML()}
           ${stampHTML({ domain: "kinship", hours: 3, date: "2026-10-02", rot: 14, cls: "hero-stamp stamp-in" })}
           ${stampHTML({ domain: "volunteering", hours: 5, date: "2026-10-09", rot: -12, cls: "hero-stamp two stamp-in" })}
@@ -288,29 +384,21 @@
       </div>
     </section>
 
-    <section class="section-tight">
+    <section class="section areas">
       <div class="wrap">
-        <div class="section-head">
-          <div>
-            <h2>Four areas, 25 hours each</h2>
-            <p>Every challenge belongs to one area. A balanced passport has about 25 hours in each.</p>
-          </div>
+        <div class="section-head centered">
+          <span class="ar" lang="ar" dir="rtl">أربعة محاور</span>
+          <h2>Four areas, 25 hours each</h2>
+          <span class="rule"></span>
+          <p>Every challenge belongs to one area. A balanced passport has about 25 hours in each.</p>
         </div>
-        <div class="domain-grid">
-          ${D.domains.map(d => `
-            <a class="domain" data-domain="${d.id}" href="#/challenges/${d.id}">
-              <span class="ar" lang="ar" dir="rtl">${d.ar}</span>
-              <h3>${esc(d.name)}</h3>
-              <p>${esc(d.blurb)}</p>
-              <span class="domain-foot">${D.activities.filter(a => a.domain === d.id).length} challenges</span>
-            </a>`).join("")}
-        </div>
+        ${areaCardsHTML()}
       </div>
     </section>
 
     <section class="section">
       <div class="wrap">
-        <div class="section-head"><h2>How the passport works</h2></div>
+        <div class="section-head"><div><span class="ar" lang="ar" dir="rtl">كيف يعمل الجواز</span><h2>How the passport works</h2></div></div>
         <ol class="steps">
           <li><h3>Create your passport</h3><p>Register your family and add everyone taking part, from grandparents to grandchildren.</p></li>
           <li><h3>Pick a challenge</h3><p>Choose from ${D.activities.length} shared activities, or sign up for a family event.</p></li>
@@ -322,11 +410,15 @@
 
     <section class="band section">
       <div class="wrap band-grid">
-        <blockquote>
-          <p>“${esc(story.text[0])}”</p>
-          <cite>${esc(story.teller)}, recorded by ${esc(story.recorder)}</cite>
-        </blockquote>
+        <div class="band-memory">
+          ${printHTML(PHOTO.hands, "band-print")}
+          <blockquote>
+            <p>“${esc(story.text[0])}”</p>
+            <cite>${esc(story.teller)}, recorded by ${esc(story.recorder)}</cite>
+          </blockquote>
+        </div>
         <div>
+          <span class="ar" lang="ar" dir="rtl">الأرشيف العائلي</span>
           <h2>Every grandparent has a story worth keeping</h2>
           <p>The family archive keeps our elders' memories for the next generation. Record a story with your grandparents and it counts towards your passport.</p>
           <a class="btn btn-primary" href="#/archive">Visit the family archive</a>
@@ -338,6 +430,7 @@
       <div class="wrap">
         <div class="section-head">
           <div>
+            <span class="ar" lang="ar" dir="rtl">الفعاليات القادمة</span>
             <h2>Upcoming family events</h2>
             <p>Register as a family group. Hours are added once the organizers confirm you attended.</p>
           </div>
@@ -352,7 +445,7 @@
 
   function viewAbout() {
     return `
-    ${pageHead("عن سند", "About Sanad", "A youth-led initiative that strengthens family bonds and social participation in Qatar through one shared goal: 100 hours of activities, done together.")}
+    ${pageHead("عن سند", "About Sanad", "A youth-led initiative that strengthens family bonds and social participation in Qatar through one shared goal: 100 hours of activities, done together.", PHOTO.flag)}
 
     <section class="wrap section-tight">
       <div class="about-grid">
@@ -377,9 +470,19 @@
 
     <section class="wrap section-tight">
       <div class="vision">
+        <span class="ar" lang="ar" dir="rtl">${D.tagline.ar}</span>
         <h2>Our vision</h2>
         <p>A society where every family is a sanad for its members and for its community.</p>
       </div>
+    </section>
+
+    <section class="wrap section-tight">
+      <div class="section-head centered">
+        <span class="ar" lang="ar" dir="rtl">المحاور</span>
+        <h2>The four areas</h2>
+        <span class="rule"></span>
+      </div>
+      ${areaCardsHTML()}
     </section>
 
     <section class="wrap section-tight">
@@ -416,7 +519,7 @@
 
   function registerHTML() {
     return `
-    ${pageHead("جواز سند العائلي", "Create your family passport", "Your passport records every activity your family completes together. Setting it up takes a minute.")}
+    ${pageHead("جواز سند العائلي", "Create your family passport", "Your passport records every activity your family completes together. Setting it up takes a minute.", PHOTO.hands)}
     <section class="wrap">
       <div class="register-card">
         <form class="form" data-form="register" novalidate>
@@ -500,7 +603,7 @@
       { at: 100, name: "Sanad family" }
     ].map(m => ({ medal: m.at, name: m.name, earned: t.done >= m.at, left: m.at - t.done }));
     const areas = D.domains.map(d => ({
-      medal: `<span lang="ar">${d.ar.split(" ")[0]}</span>`,
+      medal: areaIcon(d.id, "medal-icon"),
       name: d.short + " complete",
       earned: t.by[d.id].done >= d.target,
       left: d.target - t.by[d.id].done
@@ -531,7 +634,7 @@
       : `<div class="empty-state"><p>No stamps yet. Pick a challenge and submit a photo to collect your first one.</p><a class="btn btn-primary" href="#/challenges">Browse challenges</a></div>`;
 
     return `
-    ${pageHead("جواز سند العائلي", familyLabel(fam.name) + " passport", esc(progressSentence(t)))}
+    ${pageHead("جواز سند العائلي", familyLabel(fam.name) + " passport", esc(progressSentence(t)), PHOTO.hands)}
     <section class="wrap">
       <div class="passport-layout">
         <div class="stack">${idPageHTML(fam)}${badgesHTML(t)}</div>
@@ -583,13 +686,29 @@
     const counts = {};
     state.logs.forEach(l => { if (l.status !== "rejected") counts[l.activityId] = (counts[l.activityId] || 0) + 1; });
     return `
-    ${pageHead("التحديات والأنشطة", "Challenges", "Shared activities for the whole family. Repeat any of them as often as you like: each time you submit proof, the hours go towards your passport.")}
+    ${pageHead("التحديات والأنشطة", "Challenges", "Shared activities for the whole family. Repeat any of them as often as you like: each time you submit proof, the hours go towards your passport.", PHOTO.planting)}
     <section class="wrap">
       <div class="filter-bar" role="group" aria-label="Filter by area">
         <button type="button" data-action="filter" data-domain="" aria-pressed="${!active}">All areas</button>
-        ${D.domains.map(d => `<button type="button" data-action="filter" data-domain="${d.id}" aria-pressed="${active === d.id}"><span class="dot" style="background:${d.fill}"></span>${esc(d.name)}</button>`).join("")}
+        ${D.domains.map(d => `<button type="button" data-action="filter" data-domain="${d.id}" aria-pressed="${active === d.id}">${areaIcon(d.id, "filter-icon")}${esc(d.name)}</button>`).join("")}
       </div>
-      <div class="activity-grid">${list.map(a => activityCardHTML(a, counts[a.id] || 0)).join("")}</div>
+      ${D.domains.filter(d => !active || d.id === active).map(d => `
+        <section class="area-group" aria-labelledby="group-${d.id}">
+          <div class="area-banner" data-domain="${d.id}">
+            <span class="area-banner-photo"><img src="${d.photo}" alt="${esc(d.photoAlt)}" loading="lazy" width="500" height="340"></span>
+            <div class="area-banner-text">
+              ${areaIcon(d.id)}
+              <div>
+                <span class="area-ar" lang="ar" dir="rtl">${d.ar}</span>
+                <h2 id="group-${d.id}">${esc(d.name)}</h2>
+                <p>${esc(d.goal)}</p>
+                <p class="goal-ar" lang="ar" dir="rtl">${d.goalAr}</p>
+                <span class="area-meta">Aim for ${d.target} hours</span>
+              </div>
+            </div>
+          </div>
+          <div class="activity-grid">${list.filter(a => a.domain === d.id).map(a => activityCardHTML(a, counts[a.id] || 0)).join("")}</div>
+        </section>`).join("")}
     </section>`;
   }
 
@@ -750,7 +869,7 @@
   function viewArchive() {
     const stories = allStories();
     return `
-    ${pageHead("الأرشيف العائلي", "Family archive", "Memories and family history from our grandparents, recorded by their children and grandchildren.")}
+    ${pageHead("الأرشيف العائلي", "Family archive", "Memories and family history from our grandparents, recorded by their children and grandchildren.", PHOTO.sadu)}
     <section class="wrap">
       <div class="section-head">
         <p class="muted">${stories.length} ${stories.length === 1 ? "story" : "stories"} so far</p>
@@ -813,7 +932,7 @@
 
   function viewEvents() {
     return `
-    ${pageHead("الفعاليات والتسجيل", "Events", "Volunteering and sports events for the whole family. Register as a group, and the hours go into your passport once the organizers confirm you attended.")}
+    ${pageHead("الفعاليات والتسجيل", "Events", "Volunteering and sports events for the whole family. Register as a group, and the hours go into your passport once the organizers confirm you attended.", PHOTO.skyline)}
     <section class="wrap">
       <ul class="event-list">${upcomingEvents().map(eventRowHTML).join("")}</ul>
       <p class="muted events-note">These are sample events. Dates and venues will be confirmed by the Sanad team.</p>

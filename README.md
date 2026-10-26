@@ -200,10 +200,13 @@ sanad-website/
 
 ## Design
 
-- **Colors:** taken from the Sanad logo and the Athar Youth Initiatives Forum template. Maroon `#8A1538`, deep maroon `#5E0B25`, sand `#F5EDE0`, gold `#B58A54` and foil gold `#E3C48F`.
-- **Area colors:** kinship `#A3214A`, heritage `#B37A1C`, volunteering `#1E8A6C`, health `#2F6DBA`. These were checked for color-blind separation and contrast.
-- **Typeface:** IBM Plex Sans Arabic for both Arabic and English, matching the Athar template, with IBM Plex Mono only for the machine-readable lines on the passport page.
-- **The passport:** the site is built around the passport metaphor: a maroon booklet with the gold logo on the home page, a passport-style ID page, and ink stamps for each activity.
+- **Look and feel:** adapted from the Sanad poster: warm plaster walls in golden-hour light, palm-leaf shadows, maroon circle icons with cream line drawings, fine tapered rules and a woven Sadu border.
+- **Photos:** all photography comes from the Sanad poster (`assets/img/area-*.jpg`, `photo-*.jpg`, `lantern.jpg`). Replace them with the team's own photos at any time, keeping the same file names.
+- **Colors:** maroon `#7D1530`, deep maroon `#4C0B1C`, plaster `#F3EADC`, gold `#B8894F`, foil gold `#E6C796` and sunlight `#F4D7A6`.
+- **Area colors:** kinship `#A12A4A`, national identity `#B37F2A`, volunteering `#3F8A5F`, health `#4A73B0`. These were checked for color-blind separation and contrast, and every chart labels the areas by name as well.
+- **Icons:** the four area icons are drawn in code after the poster's icons (family, dhow and minaret, hands holding a sprout, heart with a pulse and gear), so they stay sharp at any size.
+- **Typefaces:** Almarai for Arabic headings, IBM Plex Sans Arabic for body text in both languages, and IBM Plex Mono only for the machine-readable lines on the passport page.
+- **The passport:** a maroon booklet with the gold logo and a Sadu band on the home page, a passport-style ID page, and ink stamps for each activity.
 - Accessible basics: keyboard focus styles, labelled forms, reduced-motion support, and text contrast that meets WCAG AA.
 
 ---

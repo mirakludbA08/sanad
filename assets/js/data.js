@@ -7,36 +7,55 @@
 window.SANAD = {
   goalHours: 100,
 
+  // The Sanad tagline from the poster.
+  tagline: {
+    ar: "نقرب القلوب قبل لا تبعدنا الأيام",
+    en: "Bringing hearts closer, before the days pull us apart."
+  },
+
   // The four areas. `target` is the suggested hours per area (4 x 25 = 100).
   // `fill` colors charts and progress cells; `ink` colors text and stamps.
+  // `goalAr` is the line from the Sanad poster; `photo` is the area's picture.
   domains: [
     {
       id: "kinship",
       name: "Kinship ties",
       ar: "صلة الرحم",
       short: "Kinship",
-      fill: "#A3214A",
-      ink: "#8A1538",
+      goalAr: "تعزيز الترابط والتواصل الأسري",
+      goal: "Strengthening family bonds and connection.",
+      photo: "assets/img/area-kinship.jpg",
+      photoAlt: "An elder's hand holding a young girl's hand on a Sadu rug",
+      fill: "#A12A4A",
+      ink: "#7E1A36",
       target: 25,
       blurb: "Time with grandparents, gatherings and reconnecting with relatives."
     },
     {
       id: "heritage",
-      name: "National identity & heritage",
-      ar: "الهوية الوطنية والتراث",
+      name: "National identity",
+      ar: "الهوية الوطنية",
       short: "Heritage",
-      fill: "#B37A1C",
-      ink: "#7F5410",
+      goalAr: "المحافظة على التراث والهوية الوطنية",
+      goal: "Preserving our heritage and national identity.",
+      photo: "assets/img/area-heritage.jpg",
+      photoAlt: "The Qatari flag on a plaster wall beside a lantern at sunset",
+      fill: "#B37F2A",
+      ink: "#7A5418",
       target: 25,
       blurb: "Museums, recipes, proverbs and the stories that make us Qatari."
     },
     {
       id: "volunteering",
-      name: "Volunteering & community",
-      ar: "التطوع والمشاركة المجتمعية",
+      name: "Volunteering",
+      ar: "التطوع",
       short: "Volunteering",
-      fill: "#1E8A6C",
-      ink: "#13664F",
+      goalAr: "تشجيع العمل التطوعي في المجتمع",
+      goal: "Encouraging volunteering in the community.",
+      photo: "assets/img/area-volunteering.jpg",
+      photoAlt: "Volunteers planting young trees together",
+      fill: "#3F8A5F",
+      ink: "#2C6544",
       target: 25,
       blurb: "Giving back as a family, from beach cleanups to community events."
     },
@@ -45,8 +64,12 @@ window.SANAD = {
       name: "Health & skills",
       ar: "الصحة والمهارات",
       short: "Health",
-      fill: "#2F6DBA",
-      ink: "#23518D",
+      goalAr: "تنمية المهارات الصحية والبدنية",
+      goal: "Building healthy habits and physical skills.",
+      photo: "assets/img/area-health.jpg",
+      photoAlt: "A water bottle and trainers on a maroon mat by the Doha corniche at sunset",
+      fill: "#4A73B0",
+      ink: "#2F5488",
       target: 25,
       blurb: "Walks, screen-free days and learning hands-on skills together."
     }
