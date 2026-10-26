@@ -1,38 +1,41 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sanad Family Passport</title>
-  <meta name="description" content="Sanad helps families in Qatar share 100 hours of activities across kinship ties, heritage, volunteering and health, tracked in a digital family passport.">
+  <title>جواز سند العائلي</title>
+  <meta name="description" content="سند مبادرة شبابية تقرّب العائلات في قطر من خلال 100 ساعة من الأنشطة المشتركة في جواز عائلي رقمي. Sanad helps families in Qatar share 100 hours of activities, tracked in a digital family passport.">
   <meta name="theme-color" content="#7D1530">
-  <meta property="og:title" content="Sanad Family Passport">
-  <meta property="og:description" content="100 shared hours that bring a family closer.">
+  <meta property="og:title" content="جواز سند العائلي | Sanad Family Passport">
+  <meta property="og:description" content="نقرب القلوب قبل لا تبعدنا الأيام. 100 hours that bring a family closer.">
   <meta property="og:url" content="https://mirakludba08.github.io/sanad/">
   <meta property="og:image" content="https://mirakludba08.github.io/sanad/assets/img/logo.png">
   <link rel="icon" type="image/png" href="assets/img/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Reem+Kufi:wght@400..700&display=swap">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <a class="skip-link" href="#main" data-action="skip">Skip to content</a>
+  <a class="skip-link" href="#main" data-action="skip" data-i18n="skip">انتقل إلى المحتوى</a>
 
   <header class="site-header">
     <div class="wrap header-inner">
-      <a class="brand" href="#/" aria-label="Sanad, home">
+      <a class="brand" href="#/" aria-label="Sanad">
         <img src="assets/img/logo.png" alt="" width="900" height="367">
-        <span>Family Passport</span>
+        <span data-i18n="brandSub">جواز العائلة</span>
       </a>
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-action="toggle-nav">Menu</button>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-action="toggle-nav">القائمة</button>
       <nav class="site-nav" id="site-nav" aria-label="Main">
-        <a href="#/about" data-nav="about">About</a>
-        <a href="#/passport" data-nav="passport">Passport</a>
-        <a href="#/challenges" data-nav="challenges">Challenges</a>
-        <a href="#/archive" data-nav="archive">Family archive</a>
-        <a href="#/events" data-nav="events">Events</a>
+        <a href="#/about" data-nav="about" data-i18n="nav.about">عن سند</a>
+        <a href="#/passport" data-nav="passport" data-i18n="nav.passport">الجواز</a>
+        <a href="#/challenges" data-nav="challenges" data-i18n="nav.challenges">التحديات</a>
+        <a href="#/leaderboard" data-nav="leaderboard" data-i18n="nav.leaderboard">لوحة الشرف</a>
+        <a href="#/archive" data-nav="archive" data-i18n="nav.archive">الأرشيف</a>
+        <a href="#/events" data-nav="events" data-i18n="nav.events">الفعاليات</a>
+        <a href="#/admin" data-nav="admin" data-i18n="nav.admin" hidden>لوحة التحكم</a>
       </nav>
+      <button class="lang-toggle" type="button" data-action="toggle-lang" lang="en">English</button>
       <a class="family-pill" id="family-pill" href="#/passport"></a>
     </div>
   </header>
@@ -43,17 +46,18 @@
     <div class="wrap footer-inner">
       <div class="footer-brand">
         <img src="assets/img/logo-gold.png" alt="Sanad" width="700" height="285">
-        <p>Sanad is a youth-led community initiative that brings families in Qatar closer through 100 hours of shared activities.</p>
+        <p data-i18n="footer.blurb"></p>
       </div>
       <nav class="footer-nav" aria-label="Footer">
-        <a href="#/about">About Sanad</a>
-        <a href="#/challenges">Challenges</a>
-        <a href="#/events">Events</a>
-        <a href="#/admin">Admin dashboard</a>
+        <a href="#/about" data-i18n="footer.about"></a>
+        <a href="#/challenges" data-i18n="footer.challenges"></a>
+        <a href="#/leaderboard" data-i18n="footer.leaderboard"></a>
+        <a href="#/events" data-i18n="footer.events"></a>
+        <a href="#/admin" data-i18n="footer.admin"></a>
       </nav>
       <div class="footer-meta">
-        <p>This is a demo version. Everything you enter is saved only in this browser.</p>
-        <p class="credit">Website by <span>AbdulKarim Tahir</span></p>
+        <p data-i18n="footer.demo"></p>
+        <p class="credit"><span class="credit-label" data-i18n="footer.credit"></span> <span lang="en">AbdulKarim Tahir</span></p>
       </div>
     </div>
   </footer>
